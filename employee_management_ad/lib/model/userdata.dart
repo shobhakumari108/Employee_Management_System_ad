@@ -4,10 +4,10 @@ class UserData {
   String? token;
   String? firstName;
   String? lastName;
-  String? id;
+  String? sId;
   String? companyEmployeeID;
   String? managerID;
-  DateTime? joiningDate;
+  // DateTime? joiningDate;
   List<String>? certificates;
   String? profilePhoto;
   String? jobTitle;
@@ -25,10 +25,10 @@ class UserData {
     this.token,
     this.firstName,
     this.lastName,
-    this.id,
+    this.sId,
     this.companyEmployeeID,
     this.managerID,
-    this.joiningDate,
+    // this.joiningDate,
     this.certificates,
     this.profilePhoto,
     this.jobTitle,
@@ -48,10 +48,10 @@ class UserData {
       token = json['token'];
       firstName = json['FirstName'];
       lastName = json['LastName'];
-      id = json['id'];
+      sId = json['_id'];
       companyEmployeeID = json['ComapnyEmplyeeID'];
       managerID = json['ManagerId'];
-      joiningDate = DateTime.parse(json['JoiningDate']);
+      // joiningDate = DateTime.parse(json['JoiningDate']);
       certificates = List<String>.from(json['Certificates']);
       profilePhoto = json['ProfilePhoto'];
       jobTitle = json['JobTitle'];
@@ -72,10 +72,10 @@ class UserData {
       'Password': password,
       'FirstName': firstName,
       'LastName': lastName,
-      'id': id,
+      '_id': sId,
       'ComapnyEmplyeeID': companyEmployeeID,
       'ManagerId': managerID,
-      'JoiningDate': joiningDate?.toIso8601String(),
+      // 'JoiningDate': joiningDate?.toIso8601String(),
       'Certificates': certificates,
       'ProfilePhoto': profilePhoto,
       'JobTitle': jobTitle,

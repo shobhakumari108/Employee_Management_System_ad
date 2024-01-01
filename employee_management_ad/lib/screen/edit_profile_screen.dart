@@ -1,250 +1,376 @@
-// import 'dart:io';
+// ignore_for_file: prefer_final_fields, use_build_context_synchronously
 
-// import 'package:employee_management_ad/screen/home.dart';
-// import 'package:employee_management_ad/util/appbar.dart';
-// import 'package:employee_management_ad/widgets/textfield.dart';
-// import 'package:flutter/material.dart';
+import 'package:employee_management_ad/model/userdata.dart';
+import 'package:employee_management_ad/screen/employee_profile_screen.dart';
+import 'package:employee_management_ad/service/Employee_service.dart';
+import 'package:employee_management_ad/widgets/textfield.dart';
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
-// class EditEmployeeScreen extends StatefulWidget {
-//   const EditEmployeeScreen({super.key});
+import 'package:image_picker/image_picker.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'dart:io';
 
-//   @override
-//   State<EditEmployeeScreen> createState() => _EditEmployeeScreenState();
-// }
+class EmployeeEditScreen extends StatefulWidget {
+  final UserData employee;
 
-// class _EditEmployeeScreenState extends State<EditEmployeeScreen> {
-//   // Add your controllers
-//   TextEditingController _firstNameController = TextEditingController();
-//   TextEditingController _lastNameController = TextEditingController();
-//   TextEditingController _emailController = TextEditingController();
-//   TextEditingController _numberController = TextEditingController();
-//   TextEditingController _companyNameController = TextEditingController();
-//   TextEditingController _employeeIdController = TextEditingController();
-//   TextEditingController _managerIdController = TextEditingController();
-//   TextEditingController _joiningDateController = TextEditingController();
-//   TextEditingController _jobTitleController = TextEditingController();
-//   TextEditingController _addressController = TextEditingController();
-//   TextEditingController _departmentController = TextEditingController();
-//   TextEditingController _educationController = TextEditingController();
-//   TextEditingController _employmentStatusController = TextEditingController();
-//   TextEditingController _workScheduleController = TextEditingController();
+  const EmployeeEditScreen({Key? key, required this.employee})
+      : super(key: key);
 
-//   File? _pickedImage;
+  @override
+  _EmployeeEditScreenState createState() => _EmployeeEditScreenState();
+}
 
-//   @override
-//   Widget build(BuildContext context) {
-//     var size = MediaQuery.of(context).size;
+class _EmployeeEditScreenState extends State<EmployeeEditScreen> {
+  TextEditingController _firstNameController = TextEditingController();
+  TextEditingController _lastNameController = TextEditingController();
+  TextEditingController _emailController = TextEditingController();
+  TextEditingController _phoneController = TextEditingController();
+  TextEditingController _jobTypeController = TextEditingController();
+  TextEditingController _joiningDateController = TextEditingController();
+  TextEditingController _companyNameController = TextEditingController();
 
-//     return Scaffold(
-//       appBar: buildAppBar(context, "Profile Screen"),
-//       body: SingleChildScrollView(
-//         child: Center(
-//           child: Padding(
-//             padding: const EdgeInsets.symmetric(horizontal: 100),
-//             child: Column(
-//               crossAxisAlignment: CrossAxisAlignment.start,
-//               children: [
-//                 SizedBox(height: 40.0),
-//                 Center(
-//                   child: GestureDetector(
-//                     onTap: _pickImage,
-//                     child: CircleAvatar(
-//                       backgroundColor: Color.fromARGB(255, 240, 239, 239),
-//                       radius: 50,
-//                       backgroundImage: _pickedImage != null
-//                           ? FileImage(File(_pickedImage!.path))
-//                           : null,
-//                       child: _pickedImage == null
-//                           ? Icon(
-//                               Icons.camera_alt,
-//                               size: 40,
-//                             )
-//                           : null,
-//                     ),
-//                   ),
-//                 ),
-//                 SizedBox(height: 40.0),
-//                 Row(
-//                   children: [
-//                     Expanded(
-//                       flex: 2,
-//                       child: buildTextFieldWithIcon(
-//                         controller: _firstNameController,
-//                         hintText: 'First Name',
-//                         icon: Icons.person,
-//                       ),
-//                     ),
-//                     SizedBox(width: 20.0),
-//                     Expanded(
-//                       flex: 2,
-//                       child: buildTextFieldWithIcon(
-//                         controller: _lastNameController,
-//                         hintText: 'Last Name',
-//                         icon: Icons.person,
-//                       ),
-//                     ),
-//                   ],
-//                 ),
-//                 SizedBox(height: 20.0),
-//                 buildTextFieldWithIcon(
-//                   controller: _emailController,
-//                   hintText: 'Email',
-//                   icon: Icons.email,
-//                 ),
-//                 SizedBox(height: 20.0),
-//                 Row(
-//                   children: [
-//                     Expanded(
-//                       flex: 2,
-//                       child: buildTextFieldWithIcon(
-//                         controller: _numberController,
-//                         hintText: 'Mobile Number',
-//                         icon: Icons.phone,
-//                       ),
-//                     ),
-//                     SizedBox(width: 20.0),
-//                     Expanded(
-//                       child: buildTextFieldWithIcon(
-//                         controller: _companyNameController,
-//                         hintText: 'Company Name',
-//                         icon: Icons.business,
-//                       ),
-//                     ),
-//                   ],
-//                 ),
-//                 SizedBox(height: 20.0),
-//                 Row(
-//                   children: [
-//                     Expanded(
-//                       child: buildTextFieldWithIcon(
-//                         controller: _employeeIdController,
-//                         hintText: 'Employee ID',
-//                         icon: Icons.person,
-//                       ),
-//                     ),
-//                     SizedBox(width: 20.0),
-//                     Expanded(
-//                       child: buildTextFieldWithIcon(
-//                         controller: _managerIdController,
-//                         hintText: 'Manager ID',
-//                         icon: Icons.person,
-//                       ),
-//                     ),
-//                   ],
-//                 ),
-//                 SizedBox(height: 20.0),
-//                 buildTextFieldWithIcon(
-//                   controller: _joiningDateController,
-//                   hintText: 'Joining Date',
-//                   icon: Icons.calendar_today,
-//                 ),
-//                 SizedBox(height: 20.0),
-//                 buildTextFieldWithIcon(
-//                   controller: _jobTitleController,
-//                   hintText: 'Job Title',
-//                   icon: Icons.work,
-//                 ),
-//                 SizedBox(height: 20.0),
-//                 buildTextFieldWithIcon(
-//                   controller: _addressController,
-//                   hintText: 'Address',
-//                   icon: Icons.location_on,
-//                 ),
-//                 SizedBox(height: 20.0),
-//                 buildTextFieldWithIcon(
-//                   controller: _departmentController,
-//                   hintText: 'Department',
-//                   icon: Icons.work,
-//                 ),
-//                 SizedBox(height: 20.0),
-//                 buildTextFieldWithIcon(
-//                   controller: _educationController,
-//                   hintText: 'Education',
-//                   icon: Icons.school,
-//                 ),
-//                 SizedBox(height: 20.0),
-//                 buildTextFieldWithIcon(
-//                   controller: _employmentStatusController,
-//                   hintText: 'Employment Status',
-//                   icon: Icons.work,
-//                 ),
-//                 SizedBox(height: 20.0),
-//                 buildTextFieldWithIcon(
-//                   controller: _workScheduleController,
-//                   hintText: 'Work Schedule',
-//                   icon: Icons.access_time,
-//                 ),
-//                 SizedBox(height: 60),
-//                 SizedBox(
-//                   width: size.width,
-//                   height: 50,
-//                   child: ElevatedButton(
-//                     onPressed: () {
-//                       // Access the entered values and picked image
-//                       String firstName = _firstNameController.text;
-//                       String lastName = _lastNameController.text;
-//                       String email = _emailController.text;
-//                       String number = _numberController.text;
-//                       String companyName = _companyNameController.text;
-//                       String employeeId = _employeeIdController.text;
-//                       String managerId = _managerIdController.text;
-//                       String joiningDate = _joiningDateController.text;
-//                       String jobTitle = _jobTitleController.text;
+  String? _selectedPhoto; // Added variable for the selected photo
 
-//                       String address = _addressController.text;
-//                       String department = _departmentController.text;
-//                       String education = _educationController.text;
-//                       String employmentStatus =
-//                           _employmentStatusController.text;
-//                       String workSchedule = _workScheduleController.text;
+  DateTime _selectedDate = DateTime.now();
 
-//                       // Process the data as needed
-//                       print('First Name: $firstName');
-//                       print('Last Name: $lastName');
-//                       print('Email: $email');
-//                       print('Number: $number');
-//                       print('Company Name: $companyName');
-//                       print('Employee ID: $employeeId');
-//                       print('Manager ID: $managerId');
-//                       print('Joining Date: $joiningDate');
-//                       print('Job Title: $jobTitle');
-//                       print('Address: $address');
-//                       print('Department: $department');
-//                       print('Education: $education');
-//                       print('Employment Status: $employmentStatus');
-//                       print('Work Schedule: $workSchedule');
+  @override
+  void initState() {
+    super.initState();
 
-//                       if (_pickedImage != null) {
-//                         print('Image Path: ${_pickedImage!.path}');
-//                       }
-//                       // Add processing for additional fields
-//                       // ...
-//                     },
-//                     style: ElevatedButton.styleFrom(
-//                       primary: const Color.fromARGB(255, 61, 124, 251),
-//                     ),
-//                     child: Text(
-//                       'Save',
-//                       style: TextStyle(
-//                         fontSize: 20,
-//                         fontWeight: FontWeight.bold,
-//                         color: Colors.white,
-//                       ),
-//                     ),
-//                   ),
-//                 ),
-//               ],
-//             ),
-//           ),
-//           // Expanded(flex: 3, child: Container()),
-//         ),
-//       ),
-//     );
-//   }
+    // Initialize the text controllers with existing values
+    _firstNameController.text = widget.employee.firstName ?? '';
+    _lastNameController.text = widget.employee.lastName ?? '';
+    _emailController.text = widget.employee.email ?? '';
+    _phoneController.text = widget.employee.profilePhoto ?? '';
+    _jobTypeController.text = widget.employee.jobTitle ?? '';
+    // _joiningDateController.text = widget.employee.joiningDate ?? '';
+    _companyNameController.text = widget.employee.companyName ?? '';
 
-//   // Add function to pick image
-//   void _pickImage() {
-//     // Implement image picking logic
-//     // ...
-//   }
-// }
+    // Set the selected photo
+    _selectedPhoto = widget.employee.profilePhoto;
+  }
+
+  Future<void> _updateEmployeeProfile() async {
+    // Create an Employee object with updated values
+    UserData updatedEmployee = UserData(
+      sId: widget.employee.sId,
+      firstName: _firstNameController.text,
+      lastName: _lastNameController.text,
+      email: _emailController.text,
+      mobileNumber: _phoneController.text,
+      jobTitle: _jobTypeController.text,
+      // joiningDate: _joiningDateController.text,
+      companyName: _companyNameController.text,
+      profilePhoto: _selectedPhoto ?? widget.employee.profilePhoto,
+    );
+
+    // Call the service to update the employee
+    bool success = await EmployeeService.updateEmployee(updatedEmployee);
+
+    if (success) {
+      // Show a toast and return the updated employee data
+      Fluttertoast.showToast(msg: 'Profile updated');
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (context) => EmployeeProfileScreen(
+            employee: updatedEmployee,
+          ),
+        ),
+        (route) => false,
+      );
+    } else {
+      Fluttertoast.showToast(msg: 'Failed to update profile');
+    }
+  }
+
+  Future<void> _selectDate() async {
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: _selectedDate,
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101),
+    );
+
+    if (pickedDate != null && pickedDate != _selectedDate) {
+      setState(() {
+        _selectedDate = pickedDate;
+        _joiningDateController.text = _selectedDate.toIso8601String();
+      });
+    }
+  }
+
+  // Function to pick an image from camera or gallery
+  Future<void> _pickImage(ImageSource source) async {
+    try {
+      final pickedFile = await ImagePicker().pickImage(source: source);
+
+      if (pickedFile != null) {
+        // Crop the selected image
+        CroppedFile? croppedFile = await ImageCropper().cropImage(
+          sourcePath: pickedFile.path!,
+          aspectRatioPresets: [
+            CropAspectRatioPreset.square,
+            CropAspectRatioPreset.ratio3x2,
+            CropAspectRatioPreset.original,
+            CropAspectRatioPreset.ratio4x3,
+            CropAspectRatioPreset.ratio16x9,
+          ],
+        );
+
+        if (croppedFile != null) {
+          setState(() {
+            _selectedPhoto = croppedFile.path;
+          });
+        }
+      }
+    } on Exception catch (e) {
+      // Handle exceptions, e.g., if the user denies camera or gallery access
+      print('Error picking image: $e');
+      Fluttertoast.showToast(msg: 'Error picking image: $e');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Edit Employee Profile'),
+      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 25),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Photo selection
+                GestureDetector(
+                  onTap: () {
+                    showModalBottomSheet(
+                      context: context,
+                      builder: (context) {
+                        return Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: <Widget>[
+                            ListTile(
+                              leading: const Icon(Icons.camera),
+                              title: const Text('Take a photo'),
+                              onTap: () {
+                                Navigator.pop(context);
+                                _pickImage(ImageSource.camera);
+                              },
+                            ),
+                            ListTile(
+                              leading: const Icon(Icons.photo),
+                              title: const Text('Choose from gallery'),
+                              onTap: () {
+                                Navigator.pop(context);
+                                _pickImage(ImageSource.gallery);
+                              },
+                            ),
+                            if (_selectedPhoto != null &&
+                                _selectedPhoto!.isNotEmpty)
+                              ListTile(
+                                leading: const Icon(Icons.delete),
+                                title: const Text('Remove photo'),
+                                onTap: () {
+                                  Navigator.pop(context);
+                                  setState(() {
+                                    _selectedPhoto = null;
+                                  });
+                                },
+                              ),
+                          ],
+                        );
+                      },
+                    );
+                  },
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Container(
+                        width: 120,
+                        height: 120,
+                        decoration: BoxDecoration(
+                          color: Colors.grey[300],
+                          borderRadius: BorderRadius.circular(60),
+                          image: _selectedPhoto != null &&
+                                  _selectedPhoto!.isNotEmpty
+                              ? DecorationImage(
+                                  image: FileImage(File(_selectedPhoto!)),
+                                  fit: BoxFit.cover,
+                                )
+                              : null,
+                        ),
+                        child: _selectedPhoto == null || _selectedPhoto!.isEmpty
+                            ? Center(
+                                child: Icon(
+                                  Icons.add_a_photo,
+                                  size: 40,
+                                  color: Colors.grey[600],
+                                ),
+                              )
+                            : null,
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 20),
+                // Other text fields
+                const Text(
+                  "Company name",
+                  style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                buildTextFieldWithIcon(
+                  controller: _companyNameController,
+                  hintText: 'Company name',
+                  icon: Icons.work,
+                ),
+                const SizedBox(height: 20),
+                const Text(
+                  "Enter first name",
+                  style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                buildTextFieldWithIcon(
+                  controller: _firstNameController,
+                  hintText: 'Enter first name',
+                  icon: Icons.person,
+                ),
+                SizedBox(height: 20),
+                const Text(
+                  "Last name",
+                  style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                buildTextFieldWithIcon(
+                  controller: _lastNameController,
+                  hintText: 'Enter last name',
+                  icon: Icons.person,
+                ),
+                const SizedBox(height: 20),
+                const Text(
+                  "Email",
+                  style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                buildTextFieldWithIcon(
+                  controller: _emailController,
+                  hintText: 'Enter email',
+                  icon: Icons.email,
+                ),
+                const SizedBox(height: 20),
+                const Text(
+                  "Phone number",
+                  style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                buildTextFieldWithIcon(
+                  controller: _phoneController,
+                  hintText: 'Enter phone number',
+                  icon: Icons.phone,
+                ),
+                const SizedBox(height: 20),
+                const Text(
+                  "Job type",
+                  style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                buildTextFieldWithIcon(
+                  controller: _jobTypeController,
+                  hintText: 'Job type',
+                  icon: Icons.work,
+                ),
+                const SizedBox(height: 20),
+                const Text(
+                  "Joining Date",
+                  style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  height: 50,
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: TextFormField(
+                          controller: _joiningDateController,
+                          decoration: InputDecoration(
+                            hintText: 'Joining Date',
+                            prefixIcon: IconButton(
+                              icon: const Icon(Icons.date_range),
+                              onPressed: _selectDate,
+                            ),
+                            border: OutlineInputBorder(),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 20),
+                // Save button
+                SizedBox(
+                  width: size.width,
+                  height: 50,
+                  child: ElevatedButton(
+                    onPressed: _updateEmployeeProfile,
+                    style: ElevatedButton.styleFrom(
+                      primary: const Color.fromARGB(255, 121, 91, 3),
+                    ),
+                    child: const Text(
+                      'Save',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}

@@ -1,6 +1,8 @@
+import 'package:employee_management_ad/model/userdata.dart';
 import 'package:employee_management_ad/screen/add_employee.dart';
 import 'package:employee_management_ad/screen/edit_profile_screen.dart';
 import 'package:employee_management_ad/screen/employee_list.dart';
+import 'package:employee_management_ad/screen/employee_profile_screen.dart';
 import 'package:employee_management_ad/screen/profile_screen.dart';
 import 'package:employee_management_ad/util/appbar.dart';
 import 'package:flutter/material.dart';
@@ -18,8 +20,13 @@ class _HomeScreenState extends State<HomeScreen> {
     SettingsContent(),
     ProfileScreen(),
     AddEmployeeScreen(),
-    // EditEmployeeScreen(),
-    // EmployeeScreen(),
+    // EditEmployeeScreen(
+
+    // ),
+    EmployeeScreen(),
+    EmployeeProfileScreen(
+      employee: UserData(),
+    ),
   ];
 
   int _currentIndex = 0;
@@ -28,6 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
   bool _isAddEmployeeActive = false;
   bool _isEditEmployeeActive = false;
   bool _isEmployeeListActive = false;
+  bool _isEmployeeProfileActive = false;
   bool _isSidebarVisible = true;
 
   //  String _appBarTitle = "Home Content";
@@ -199,6 +207,23 @@ class _HomeScreenState extends State<HomeScreen> {
                                 _navigateToPage(5);
                               },
                             ),
+                            ListTile(
+                              title: Text(
+                                "Employee Profile",
+                                style: TextStyle(fontSize: 12),
+                              ),
+                              leading: Icon(Icons.person),
+                              dense: true,
+                              contentPadding: const EdgeInsets.only(left: 40.0),
+                              selected: _currentIndex == 6,
+                              tileColor: _currentIndex == 6
+                                  ? Color.fromARGB(255, 61, 124, 251)
+                                  : null,
+                              onTap: () {
+                                _toggleEmployeeProfileActive();
+                                _navigateToPage(6);
+                              },
+                            ),
                           ],
                         ],
                       ),
@@ -257,6 +282,12 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  void _toggleEmployeeProfileActive() {
+    setState(() {
+      _isEmployeeProfileActive = !_isEmployeeProfileActive;
+    });
+  }
+
   // void _updateTitle(String title) {
   //   setState(() {
   //     _appBarTitle = title;
@@ -303,7 +334,6 @@ AppBar buildAppBar(BuildContext context, String title) {
       },
     ),
 
-    
     title: Text(title),
     // elevation: 0,
     backgroundColor: Color.fromARGB(255, 61, 124, 251),

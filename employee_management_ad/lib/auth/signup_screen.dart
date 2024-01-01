@@ -26,7 +26,7 @@ class _SignupScreenState extends State<SignupScreen> {
     final String password = passwordController.text;
 
     // Replace the following placeholder code with your actual server endpoint and logic
-    final String serverUrl = 'http://192.168.29.135:2000/app/admin/addAdmin';
+    final String serverUrl = 'http://192.168.29.77:2000/app/admin/addAdmin';
     final Map<String, String> headers = {
       'Content-Type': 'application/json',
       // 'Authorization':
@@ -96,22 +96,22 @@ class _SignupScreenState extends State<SignupScreen> {
           children: [
             Column(
               children: [
-                 Container(
-              height: size.height / 2,
-              width: size.width,
-              color: Color.fromARGB(255, 61, 124, 251),
-              child: Padding(
-                padding: const EdgeInsets.only(left: 250),
-                child: Row(
-                  // mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Lottie.asset(
-                      'assets/Animation - 1703759522611.json',
+                Container(
+                  height: size.height / 2,
+                  width: size.width,
+                  color: Color.fromARGB(255, 61, 124, 251),
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 250),
+                    child: Row(
+                      // mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Lottie.asset(
+                          'assets/Animation - 1703759522611.json',
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
-              ),
-            ),
                 Container(
                   height: size.height / 2,
                   width: size.width,
